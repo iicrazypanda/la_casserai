@@ -1,0 +1,13 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block main_header_content %} <h1>Create new User</h1>{% endblock %}
+
+{% block main_body_content %}
+    {{ include('user/_form.html.twig') }}
+    <div class="btn-group order-1" role="group">
+    <a href="{{ path('user_index') }}" class="btn btn-primary"><i class="fas fa-caret-square-left btn text-white"></i> back to list</a>
+    </div>
+    </div>
+{% endblock %}

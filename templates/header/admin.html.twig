@@ -1,0 +1,63 @@
+<div class="col-md-12 my-3">
+    <div class="list-group">
+        <nav class="list-group-item list-group-item-action main-bg-color d-flex navbar navbar-expand-md">
+            <div class="order-md-2 px-5">
+                <a class="navbar-brand m-0 text-light" href="/">La Casserai</a>
+            </div>
+            <button class="navbar-toggler order-md-3" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse order-md-1 d-flex" id="navbarCollapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link disabled text-light">
+                            Dashboard
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="collapse navbar-collapse order-md-4 d-flex justify-content-end" id="navbarCollapse">
+                <ul class="navbar-nav">
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                        {% if currentPath_replaced == "login" %}
+                            <li class="nav-item active">
+                        {% else %}
+                            <li class="nav-item">
+                        {% endif %}
+                        <a href="{{ path('fos_user_security_logout') }}" class="nav-link text-light">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a href="{{ path('fos_user_security_login') }}" class="nav-link text-light">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<div class="row my-3 mx-0">
+    <div class="col-md-2">
+        <div class="list-group">
+            <a href="/" class="list-group-item list-group-item-action">Home</a>
+            {% set entities = ['User', 'Reservering', 'Kamer', 'Soort', 'Extra', 'Organisatie', 'Functie', 'Image'] %}
+            {% for key in entities%}
+                <a href="/{{ key|lower }}" class="list-group-item list-group-item-action">{{ key }}</a>
+            {% endfor %}
+        </div>
+    </div>

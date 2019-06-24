@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Functie{% endblock %}
+
+{% block body %}
+    <h1>Edit Functie</h1>
+
+    {{ include('functie/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('functie_index') }}">back to list</a>
+
+    {{ include('functie/_delete_form.html.twig') }}
+{% endblock %}

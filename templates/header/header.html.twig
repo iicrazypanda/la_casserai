@@ -1,0 +1,89 @@
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark sticky-top d-flex main-bg-color justify-content-center" style="border-bottom: 5px solid white;">
+        <div class="order-md-2 px-5" style="z-index: 20;">
+            <a class="navbar-brand m-0" href="/">
+                La Casserai
+            </a>
+        </div>
+        <button class="navbar-toggler order-md-3" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse order-md-1 d-flex justify-content-center" id="navbarCollapse">
+            <ul class="navbar-nav">
+                {% set entities = ['Home', 'User', 'Reservering', 'Kamer', 'Soort'] %}
+                {% set currentPath = path(app.request.attributes.get('_route'),
+                    app.request.attributes.get('_route_params')) %}
+                {% set currentPath_replaced = currentPath|replace({'/' : ""})%}
+                {% for key in entities %}
+                    {% if currentPath_replaced == key|lower %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/{{ key|lower }}">{{ key }}</a>
+                        </li>
+                    {% elseif key == 'Home' and (currentPath == "/" or currentPath == "") %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">{{ key }}</a>
+                        </li>
+                    {% else %}
+                        {% if key == 'Home' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">{{ key }}</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/{{ key|lower }}">{{ key }}</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        </div>
+
+        <div class="order-md-2 bg-danger rounded-circle self-align-center shadow-lg position-absolute" style="height: 150px; width: 150px; z-index: 10;">
+        </div>
+
+        <div class="collapse navbar-collapse order-md-4 d-flex justify-content-center" id="navbarCollapse">
+            <ul class="navbar-nav">
+                {% set entities = ['Extra', 'Organisatie', 'Functie', 'Image'] %}
+                {% for key in entities %}
+                    {% if currentPath_replaced == key|lower %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/{{ key|lower }}">{{ key }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/{{ key|lower }}">{{ key }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                    {% if currentPath_replaced == "login" %}
+                        <li class="nav-item active">
+                    {% else %}
+                        <li class="nav-item">
+                    {% endif %}
+                    <a href="{{ path('fos_user_security_logout') }}" class="nav-link">
+                        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                    </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{{ path('fos_user_security_login') }}" class="nav-link">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            {% if app.request.hasPreviousSession %}
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for message in messages %}
+                        <div class="flash-{{ type }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </nav>
+</header>

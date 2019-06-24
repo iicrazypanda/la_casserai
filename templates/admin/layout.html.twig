@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}{{ include('header/admin.html.twig') }}{% endblock %}
+
+{% block body %}
+
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">{% block main_header_content %}{% endblock %}</div>
+                <div class="card-body overflow-auto {% block main_body_classes %}{% endblock %}">
+                    {% block main_body_content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

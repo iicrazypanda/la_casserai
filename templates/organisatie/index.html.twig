@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Organisatie index{% endblock %}
+
+{% block body %}
+    <h1>Organisatie index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Adress</th>
+                <th>Zip</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Website</th>
+                <th>Email</th>
+                <th>Phone_nr</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for organisatie in organisaties %}
+            <tr>
+                <td>{{ organisatie.id }}</td>
+                <td>{{ organisatie.name }}</td>
+                <td>{{ organisatie.adress }}</td>
+                <td>{{ organisatie.zip }}</td>
+                <td>{{ organisatie.city }}</td>
+                <td>{{ organisatie.country }}</td>
+                <td>{{ organisatie.website }}</td>
+                <td>{{ organisatie.email }}</td>
+                <td>{{ organisatie.phoneNr }}</td>
+                <td>
+                    <a href="{{ path('organisatie_show', {'id': organisatie.id}) }}">show</a>
+                    <a href="{{ path('organisatie_edit', {'id': organisatie.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('organisatie_new') }}">Create new</a>
+{% endblock %}

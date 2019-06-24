@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+<div class="row d-flex justify-content-between mx-0">
+    <div class="btn-group order-2" role="group">
+    <button class="btn btn-primary"><i class="fas fa-save btn- btn-primary"></i> {{ button_label|default('save') }}</button>
+    </div>
+{{ form_end(form) }}
