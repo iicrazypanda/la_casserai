@@ -19,6 +19,19 @@ class ReserveringRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservering::class);
     }
 
+    public function getBetween(array $value)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('IDENTITY(r.kamers)')
+            ->where('r.checkinDate BETWEEN :begin AND :end')
+            ->orWhere('r.checkoutDate BETWEEN :begin AND :end')
+            ->setParameter('begin', $value[0])
+            ->setParameter('end', $value[1])
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Reservering[] Returns an array of Reservering objects
     //  */

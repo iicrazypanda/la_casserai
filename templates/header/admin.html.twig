@@ -1,3 +1,6 @@
+{% set currentPath = path(app.request.attributes.get('_route'),
+    app.request.attributes.get('_route_params')) %}
+{% set currentPath_replaced = currentPath|replace({'/' : ""})%}
 <div class="col-md-12 my-3">
     <div class="list-group">
         <nav class="list-group-item list-group-item-action main-bg-color d-flex navbar navbar-expand-md">
@@ -19,22 +22,7 @@
 
             <div class="collapse navbar-collapse order-md-4 d-flex justify-content-end" id="navbarCollapse">
                 <ul class="navbar-nav">
-                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-                        {% if currentPath_replaced == "login" %}
-                            <li class="nav-item active">
-                        {% else %}
-                            <li class="nav-item">
-                        {% endif %}
-                        <a href="{{ path('fos_user_security_logout') }}" class="nav-link text-light">
-                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                        </a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a href="{{ path('fos_user_security_login') }}" class="nav-link text-light">Login</a>
-                        </li>
-                    {% endif %}
+                    {% include 'components/profileDropdown.html.twig' %}
                 </ul>
             </div>
         </nav>
@@ -57,7 +45,17 @@
             <a href="/" class="list-group-item list-group-item-action">Home</a>
             {% set entities = ['User', 'Reservering', 'Kamer', 'Soort', 'Extra', 'Organisatie', 'Functie', 'Image'] %}
             {% for key in entities%}
-                <a href="/{{ key|lower }}" class="list-group-item list-group-item-action">{{ key }}</a>
+                {% if currentPath_replaced == key|lower %}
+                    <a href="/{{ key|lower }}" class="list-group-item list-group-item-action active-red login-card-light">{{ key }}</a>
+                {% elseif key == 'Home' and (currentPath == "/" or currentPath == "") %}
+                    <a href="/" class="list-group-item list-group-item-action active-red login-card-light">{{ key }}</a>
+                {% else %}
+                    {% if key == 'Home' %}
+                        <a href="/" class="list-group-item list-group-item-action">{{ key }}</a>
+                    {% else %}
+                        <a href="/{{ key|lower }}" class="list-group-item list-group-item-action">{{ key }}</a>
+                    {% endif %}
+                {% endif %}
             {% endfor %}
         </div>
     </div>

@@ -4,7 +4,7 @@
 
 {% block main_header_content %}
     <div class="row mx-0">
-        <h1 class="col px-0">User index</h1>
+        <h1 class="col px-0 navbar-dark">User index</h1>
         <div class="col d-flex justify-content-end align-items-center px-0">
             <a href="{{ path('user_new') }}" class="btn btn-danger">Create new</a>
         </div>
@@ -66,8 +66,8 @@
                 <td>{{ user.zip }}</td>
                 <td>{{ user.city }}</td>
                 <td>
-                    <a class="btn btn-danger" href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                    <a class="btn btn-danger border-secondary" href="{{ path('user_show', {'id': user.id}) }}">show</a>
+                    <a class="btn btn-danger border-secondary" href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

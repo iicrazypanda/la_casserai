@@ -1,6 +1,34 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<div class="fos_user_user_show">
-    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
-    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+<div class="login-card-light p-3 shadow-lg rounded-lg">
+    <div class="pt-3">
+        <h2 class="text-danger">Profile</h2>
+    </div>
+    <form class="mt-5" action="{{ path("fos_user_profile_edit") }}" method="get">
+        {% set user_items = ["Username", "Email"] %}
+        {% for key in user_items %}
+            {% set value %}
+                user.username
+            {% endset %}
+            <div class="form-group">
+                <label for="{{ key|lower }}">{{ key }}</label>
+                <input
+                        type="text"
+                        id="{{ key|lower }}"
+                        class="form-control form-control-sm"
+                        name="_{{ key|lower }}"
+                        value="{{ attribute(user, key|lower) }}"
+                        required="required"
+                        autocomplete="{{ key|lower }}"
+                        disabled>
+            </div>
+        {% endfor %}
+        <div class="mt-5">
+            <button class="btn btn-sm btn-danger col" id="_submit" name="_submit">
+                Edit
+            </button>
+        </div>
+
+
+    </form>
 </div>

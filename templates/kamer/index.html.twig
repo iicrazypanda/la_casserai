@@ -1,19 +1,29 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/layout.html.twig' %}
 
 {% block title %}Kamer index{% endblock %}
 
-{% block body %}
-    <h1>Kamer index</h1>
+{% block main_header_content %}
+    <div class="row mx-0">
+        <h1 class="col px-0">Kamer index</h1>
+        <div class="col d-flex justify-content-end align-items-center px-0">
+            <a href="{{ path('kamer_new') }}" class="btn btn-danger">Create new</a>
+        </div>
+    </div>
+{% endblock %}
 
-    <table class="table">
+{% block main_body_classes %}p-0{% endblock %}
+
+{% block main_body_content %}
+
+    <table class="table table-hover">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Soort</th>
-                <th>Omschrijving</th>
-                <th>Prijs</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Soort</th>
+            <th>Omschrijving</th>
+            <th>Prijs</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for kamer in kamers %}
@@ -23,8 +33,8 @@
                 <td>{{ kamer.omschrijving }}</td>
                 <td>{{ kamer.prijs }}</td>
                 <td>
-                    <a href="{{ path('kamer_show', {'id': kamer.id}) }}">show</a>
-                    <a href="{{ path('kamer_edit', {'id': kamer.id}) }}">edit</a>
+                    <a class="btn btn-danger border-right border-secondary" href="{{ path('kamer_show', {'id': kamer.id}) }}">show</a>
+                    <a class="btn btn-danger border-left border-secondary" href="{{ path('kamer_edit', {'id': kamer.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -34,6 +44,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('kamer_new') }}">Create new</a>
 {% endblock %}

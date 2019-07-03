@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kamer index{% endblock %}
+
+{% block body %}
+
+
+
+            <div class="login-card-light p-3 rounded-lg">
+                <div class="pt-2">
+                    <h2 class="text-danger">Kamers</h2>
+                </div>
+
+                <form class="mt-3" action="{{ path('kamer_check') }}" method="post">
+                    {% if csrf_token is defined%}
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                    {% endif %}
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="begin_datum">Begin datum</label>
+                                <input type="date"
+                                       id="begin_datum"
+                                       class="form-control form-control-lg"
+                                       placeholder="begin"
+                                       name="begin_datum"
+                                       value=""
+                                       required="required"
+                                       autocomplete="username">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="eind_datum">Eind datum</label>
+                                <input type="date"
+                                       id="eind_datum"
+                                       class="form-control form-control-lg"
+                                       placeholder="eind"
+                                       name="eind_datum"
+                                       value=""
+                                       required="required"
+                                       autocomplete="username">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="soort">Soort</label>
+                                <select
+                                        id="eind_datum"
+                                        class="form-control form-control-lg"
+                                        name="Soort"
+                                        required="required"
+                                        autocomplete="soort">
+                                    {% for soort in soorten %}
+                                        <option value="{{ soort.omschrijving }}">{{ soort.omschrijving }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                            <div class="col-md-2">
+                                <label for="_submit"><br></label>
+                                <button class="btn btn-lg btn-danger col" type="submit" id="_submit" name="_submit">
+                                    Zoek
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+
+    <div class="login-card-light p-3 shadow-lg rounded-lg">
+    <table class="table table-hover mt-4">
+        <thead>
+        <tr>
+            <th>Soort</th>
+            <th>Omschrijving</th>
+            <th>Prijs</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for kamer in kamers %}
+            <tr>
+                <td>{{ kamer.soort }}</td>
+                <td>{{ kamer.omschrijving }}</td>
+                <td>{{ kamer.prijs }}</td>
+                <td>
+                    <a class="btn btn-danger border-right border-secondary" href="{{ path('kamer_show', {'id': kamer.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

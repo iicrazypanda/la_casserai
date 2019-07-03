@@ -19,6 +19,17 @@ class KamerRepository extends ServiceEntityRepository
         parent::__construct($registry, Kamer::class);
     }
 
+    public function notIn(array $value)
+    {
+        $valueAsString = implode(",", $value);
+        return $this->createQueryBuilder('k')
+            ->where($this->createQueryBuilder('k')->expr()->notIn('k.id', ':value'))
+            ->setParameter(':value', $valueAsString)
+            ->getQuery()
+            ->getResult();
+    }
+
+
     // /**
     //  * @return Kamer[] Returns an array of Kamer objects
     //  */

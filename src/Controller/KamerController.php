@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Kamer;
+use App\Entity\Reservering;
 use App\Form\KamerType;
 use App\Repository\KamerRepository;
+use App\Repository\SoortRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +26,7 @@ class KamerController extends AbstractController
             'kamers' => $kamerRepository->findAll(),
         ]);
     }
+
 
     /**
      * @Route("/new", name="kamer_new", methods={"GET","POST"})
@@ -93,4 +96,32 @@ class KamerController extends AbstractController
 
         return $this->redirectToRoute('kamer_index');
     }
+
+    /**
+     * @Route("/check", name="kamer_check", methods={"POST"})
+     */
+    public function checkDate(SoortRepository $soortRepository)
+    {
+        $BeginDate = $_POST["begin_datum"];
+        $EndDate = $_POST["eind_datum"];
+
+        $reservering = $this->getDoctrine()
+            ->getRepository(Reservering::class)
+            ->getBetween(array($BeginDate, $EndDate));
+
+        $input = array();
+        for ($x = 0; $x < count($reservering); $x++) {
+            array_push($input, "'".$reservering[$x][1]."'");
+        }
+
+        $available = $this->getDoctrine()
+            ->getRepository(Kamer::class)
+            ->notIn($input);
+
+        return $this->render('kamer/default_index.html.twig', [
+            'kamers' => $available,
+            'soorten' => $soortRepository->findAll(),
+        ]);
+    }
+
 }

@@ -2,9 +2,18 @@
 
 {% block title %}Reservering index{% endblock %}
 
-{% block card_header %}<h1>Reservering index</h1>{% endblock %}
+{% block main_header_content %}
+    <div class="row mx-0">
+        <h2 class="col px-0 nav-item">Reservering index</h2>
+        <div class="col d-flex justify-content-end align-items-center px-0">
+            <a href="{{ path('reservering_new') }}" class="btn btn-danger">Create new</a>
+        </div>
+    </div>
+{% endblock %}
 
-{% block main_content %}
+{% block main_body_classes %}p-0{% endblock %}
+
+{% block main_body_content %}
     <table class="table table-hover">
         <thead>
             <tr>
@@ -23,8 +32,8 @@
                 <td>{{ reservering.checkoutDate ? reservering.checkoutDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ reservering.enabled ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('reservering_show', {'id': reservering.id}) }}">show</a>
-                    <a href="{{ path('reservering_edit', {'id': reservering.id}) }}">edit</a>
+                    <a class="btn btn-danger border-secondary" href="{{ path('reservering_show', {'id': reservering.id}) }}">show</a>
+                    <a class="btn btn-danger border-secondary" href="{{ path('reservering_edit', {'id': reservering.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -34,6 +43,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('reservering_new') }}" class="btn btn-primary">Create new</a>
 {% endblock %}

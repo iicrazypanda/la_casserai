@@ -1,7 +1,7 @@
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark sticky-top d-flex main-bg-color justify-content-center" style="border-bottom: 5px solid white;">
-        <div class="order-md-2 px-5" style="z-index: 20;">
-            <a class="navbar-brand m-0" href="/">
+    <nav class="navbar navbar-expand-md navbar-dark sticky-top d-flex main-bg-color justify-content-center">
+        <div class="col-md-2 order-md-2 justify-content-center text-center" style="width: 150px; z-index: 20;">
+            <a class="navbar-brand m-0" href="/" style="text-align: center">
                 La Casserai
             </a>
         </div>
@@ -10,7 +10,11 @@
         </button>
         <div class="collapse navbar-collapse order-md-1 d-flex justify-content-center" id="navbarCollapse">
             <ul class="navbar-nav">
-                {% set entities = ['Home', 'User', 'Reservering', 'Kamer', 'Soort'] %}
+                {% if is_granted('ROLE_USER') and (app.user.functions is not null or app.user.functions is not null)%}
+                    {% set entities = ['Extra', 'Organisatie', 'Functie', 'Image', 'Contact'] %}
+                {% else %}
+                    {% set entities = ['Home', 'Kamer'] %}
+                {% endif %}
                 {% set currentPath = path(app.request.attributes.get('_route'),
                     app.request.attributes.get('_route_params')) %}
                 {% set currentPath_replaced = currentPath|replace({'/' : ""})%}
@@ -39,12 +43,13 @@
             </ul>
         </div>
 
-        <div class="order-md-2 bg-danger rounded-circle self-align-center shadow-lg position-absolute" style="height: 150px; width: 150px; z-index: 10;">
-        </div>
-
         <div class="collapse navbar-collapse order-md-4 d-flex justify-content-center" id="navbarCollapse">
             <ul class="navbar-nav">
-                {% set entities = ['Extra', 'Organisatie', 'Functie', 'Image'] %}
+                {% if is_granted('ROLE_USER') and app.user.functions is not null%}
+                    {% set entities = ['Extra', 'Organisatie', 'Functie', 'Image', 'Contact'] %}
+                {% else %}
+                    {% set entities = ['Info', 'Contact'] %}
+                {% endif %}
                 {% for key in entities %}
                     {% if currentPath_replaced == key|lower %}
                         <li class="nav-item active">
@@ -57,22 +62,8 @@
                     {% endif %}
                 {% endfor %}
 
-                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-                    {% if currentPath_replaced == "login" %}
-                        <li class="nav-item active">
-                    {% else %}
-                        <li class="nav-item">
-                    {% endif %}
-                    <a href="{{ path('fos_user_security_logout') }}" class="nav-link">
-                        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                    </a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a href="{{ path('fos_user_security_login') }}" class="nav-link">Login</a>
-                    </li>
-                {% endif %}
+
+                {% include 'components/profileDropdown.html.twig' %}
             </ul>
 
             {% if app.request.hasPreviousSession %}

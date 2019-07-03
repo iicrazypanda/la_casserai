@@ -1,10 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/layout.html.twig' %}
 
 {% block title %}Edit User{% endblock %}
 
-{% block card_header %}<h1>Edit User</h1>{% endblock %}
+{% block main_header_content %}
+    <div class="row mx-0">
+        <h1 class="col px-0 navbar-dark">User index</h1>
+        <div class="col d-flex justify-content-end align-items-center px-0">
+            <a href="{{ path('user_new') }}" class="btn btn-danger">Create new</a>
+        </div>
+    </div>
+{% endblock %}
 
-{% block main_content %}
+{% block main_body_classes %}p-0{% endblock %}
+
+{% block main_body_content %}
     {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('user_index') }}">back to list</a>

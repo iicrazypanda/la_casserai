@@ -5,3 +5,6 @@ fos_user:
   from_email:
     address: "1033081@mborijnland.nl"
     sender_name: "10330081@mborijnland.nl"
+  registration:
+    form:
+      type: App\Form\RegistrationFormType
